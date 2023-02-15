@@ -3,3 +3,4 @@
 1. Set up project
 2. Chạy thử sequelize
 3. Kết nối database
+4. Tạo Model, Seeder, Migration
