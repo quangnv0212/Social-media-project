@@ -13,8 +13,13 @@ module.exports = (sequelize, DataTypes) => {
   }
   User.init(
     {
-      email: DataTypes.STRING,
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
       password: DataTypes.STRING,
+      passwordConfirm: DataTypes.STRING,
       firstName: DataTypes.STRING,
       lastName: DataTypes.STRING,
       address: DataTypes.STRING,
@@ -23,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
       phonenumber: DataTypes.STRING,
       positionId: DataTypes.STRING,
       image: DataTypes.STRING,
+      passwordChangedAt: DataTypes.DATE,
+      passwordResetToken: DataTypes.STRING,
+      passwordResetExpires: DataTypes.DATE,
+      active: DataTypes.BOOLEAN,
     },
     {
       sequelize,

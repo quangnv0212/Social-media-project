@@ -11,8 +11,13 @@ module.exports = {
       },
       email: {
         type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
       },
       password: {
+        type: Sequelize.STRING,
+      },
+      passwordConfirm: {
         type: Sequelize.STRING,
       },
       firstName: {
@@ -38,6 +43,18 @@ module.exports = {
       },
       image: {
         type: Sequelize.STRING,
+      },
+      passwordChangedAt: {
+        type: Sequelize.DATE,
+      },
+      passwordResetToken: {
+        type: Sequelize.STRING,
+      },
+      passwordResetExpires: {
+        type: Sequelize.DATE,
+      },
+      active: {
+        type: Sequelize.BOOLEAN,
       },
       createdAt: {
         allowNull: false,
