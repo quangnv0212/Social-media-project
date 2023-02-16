@@ -6,3 +6,4 @@
 4. Tạo Model, Seeder, Migration
 5. Render Views
 6. Làm chức năng register, login
+7. Catch Error Route not defined

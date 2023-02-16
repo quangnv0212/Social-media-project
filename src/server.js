@@ -10,8 +10,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 viewEngine(app);
 app.use("/api/v1", rootRouter);
-app.get("/", (req, res) => {
-  res.send("Hello World1!");
+app.all("*", (req, res, next) => {
+  res.status(404).json({
+    status: "fail",
+    message: `Can't find ${req.originalUrl} on this server`,
+  });
 });
 connectDB();
 app.listen(port, () => {
