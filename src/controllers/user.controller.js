@@ -87,4 +87,43 @@ const login = async (req, res) => {
   }
 };
 
+const register2 = async (req, res) => {
+  const {
+    email,
+    password,
+    firstName,
+    lastName,
+    address,
+    gender,
+    roleId,
+    phonenumber,
+    positionId,
+    image,
+  } = req.body;
+  try {
+    // tạo ra một chuỗi ngẫu nhiên
+    const salt = bcrypt.genSaltSync(10);
+    // mã hóa salt + password
+    const hashPassword = bcrypt.hashSync(password, salt);
+    const newUser = await db.User.create({
+      email,
+      password: hashPassword,
+      firstName,
+      lastName,
+      address,
+      gender,
+      roleId,
+      phonenumber,
+      positionId,
+      image,
+    });
+    createSendToken(newUser, 201, res);
+  } catch (error) {
+    res.status(404).json({
+      status: "fail",
+      message: error,
+    });
+  }
+};
+
 module.exports = { getAllUser, register, login };
