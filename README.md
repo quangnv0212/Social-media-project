@@ -8,3 +8,4 @@
 6. Làm chức năng register, login
 7. Catch Error Route not defined
 8. Catch Global Error
+9. Add Catch Async function

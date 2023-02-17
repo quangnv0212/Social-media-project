@@ -3,6 +3,12 @@ const jwt = require("jsonwebtoken");
 const db = require("../models");
 const bcrypt = require("bcryptjs");
 const createSendToken = require("../utils/createSendToken");
+const AppError = require("../utils/appError");
+const catchAsync = (fn) => {
+  return (req, res, next) => {
+    fn(req, res, next).catch(next);
+  };
+};
 const getAllUser = async (req, res) => {
   try {
     const userList = await db.User.findAll();
@@ -20,7 +26,7 @@ const getAllUser = async (req, res) => {
     });
   }
 };
-const register = async (req, res) => {
+const register = catchAsync(async (req, res) => {
   const {
     email,
     password,
@@ -33,31 +39,24 @@ const register = async (req, res) => {
     positionId,
     image,
   } = req.body;
-  try {
-    // tạo ra một chuỗi ngẫu nhiên
-    const salt = bcrypt.genSaltSync(10);
-    // mã hóa salt + password
-    const hashPassword = bcrypt.hashSync(password, salt);
-    const newUser = await db.User.create({
-      email,
-      password: hashPassword,
-      firstName,
-      lastName,
-      address,
-      gender,
-      roleId,
-      phonenumber,
-      positionId,
-      image,
-    });
-    createSendToken(newUser, 201, res);
-  } catch (error) {
-    res.status(404).json({
-      status: "fail",
-      message: error,
-    });
-  }
-};
+  // tạo ra một chuỗi ngẫu nhiên
+  const salt = bcrypt.genSaltSync(10);
+  // mã hóa salt + password
+  const hashPassword = bcrypt.hashSync(password, salt);
+  const newUser = await db.User.create({
+    email,
+    password: hashPassword,
+    firstName,
+    lastName,
+    address,
+    gender,
+    roleId,
+    phonenumber,
+    positionId,
+    image,
+  });
+  createSendToken(newUser, 201, res);
+});
 const login = async (req, res) => {
   const { email, password } = req.body;
   console.log(req.body);
@@ -87,4 +86,5 @@ const login = async (req, res) => {
     res.status(404).send({ message: "Không tìm thấy email phù hợp" });
   }
 };
+
 module.exports = { getAllUser, register, login };
