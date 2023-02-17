@@ -6,9 +6,18 @@ const createSendToken = require("../utils/createSendToken");
 const getAllUser = async (req, res) => {
   try {
     const userList = await db.User.findAll();
-    res.status(200).send(userList);
+    res.status(200).json({
+      status: "success",
+      results: userList.length,
+      data: {
+        userList,
+      },
+    });
   } catch (error) {
-    console.log(error);
+    res.status(404).json({
+      status: "fail",
+      message: error,
+    });
   }
 };
 const register = async (req, res) => {
@@ -43,7 +52,10 @@ const register = async (req, res) => {
     });
     createSendToken(newUser, 201, res);
   } catch (error) {
-    res.status(500).send(error.errors);
+    res.status(404).json({
+      status: "fail",
+      message: error,
+    });
   }
 };
 const login = async (req, res) => {
